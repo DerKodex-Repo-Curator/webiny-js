@@ -14517,6 +14517,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/universal-router@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "@types/universal-router@npm:8.0.0"
+  dependencies:
+    universal-router: "npm:*"
+  checksum: 10/9307ab27b1a8d5fd096b0c6e3ce58cec289a5a71fbcbcb040582b66e963ecccb7fe7bf8546dc7e721725e9643567a78ea8479fa5d5010222b5061d08a971c527
+  languageName: node
+  linkType: hard
+
 "@types/unzipper@npm:^0.10.10":
   version: 0.10.10
   resolution: "@types/unzipper@npm:0.10.10"
@@ -15462,6 +15471,7 @@ __metadata:
     cmdk: "npm:^1.0.4"
     css-loader: "npm:^6.10.0"
     file-loader: "npm:6.2.0"
+    history: "npm:^5.3.0"
     lodash: "npm:^4.17.21"
     minimatch: "npm:^5.1.6"
     mobx: "npm:^6.9.0"
@@ -19516,6 +19526,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@webiny/react-router@workspace:packages/react-router"
   dependencies:
+    "@types/universal-router": "npm:^8.0.0"
     "@webiny/plugins": "npm:0.0.0"
     "@webiny/project-utils": "npm:0.0.0"
     "@webiny/react-composition": "npm:0.0.0"
@@ -19527,6 +19538,7 @@ __metadata:
     react-router-dom: "npm:6.3.0"
     rimraf: "npm:^6.0.1"
     typescript: "npm:5.9.2"
+    universal-router: "npm:^9.2.1"
   peerDependencies:
     react: 18.2.0
   languageName: unknown
@@ -36649,6 +36661,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"path-to-regexp@npm:^6.2.0":
+  version: 6.3.0
+  resolution: "path-to-regexp@npm:6.3.0"
+  checksum: 10/6822f686f01556d99538b350722ef761541ec0ce95ca40ce4c29e20a5b492fe8361961f57993c71b2418de12e604478dcf7c430de34b2c31a688363a7a944d9c
+  languageName: node
+  linkType: hard
+
 "path-to-regexp@npm:^8.1.0":
   version: 8.2.0
   resolution: "path-to-regexp@npm:8.2.0"
@@ -44346,6 +44365,22 @@ __metadata:
     "@types/jsonwebtoken": "npm:^9.0.0"
     jsonwebtoken: "npm:^9.0.2"
   checksum: 10/f71fa4f0b33f9bd2ab52571f02e421f68016f7e1f963040886c843160c7c325117723268fc7f30dbbe6abd01438070625851246dce8837f11d401bf4ac221e60
+  languageName: node
+  linkType: hard
+
+"universal-router@npm:*":
+  version: 10.0.1
+  resolution: "universal-router@npm:10.0.1"
+  checksum: 10/9dcc4296292e716374b70e041e825b949b7381dfc477d9b8ec141f0452a9549571c2ebbbfb96864ddb67000742bb2120e2b0c7dfd3287b2f488ef82e45376633
+  languageName: node
+  linkType: hard
+
+"universal-router@npm:^9.2.1":
+  version: 9.2.1
+  resolution: "universal-router@npm:9.2.1"
+  dependencies:
+    path-to-regexp: "npm:^6.2.0"
+  checksum: 10/ce1c8de5225b6c175880d7b45a08b4b95acbe39fa7561fd433559dbaabbe97b8b47a57e022578dfdb2dc168c2adab6364a8a42a308a68ef72507f14267400714
   languageName: node
   linkType: hard
 

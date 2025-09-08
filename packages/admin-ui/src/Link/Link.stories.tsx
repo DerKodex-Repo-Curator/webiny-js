@@ -1,15 +1,18 @@
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
+import { createBrowserHistory } from "history";
 import { BrowserRouter } from "@webiny/react-router";
 import { Link } from "./Link";
 import { Text } from "~/Text";
+
+const history = createBrowserHistory();
 
 const meta: Meta<typeof Link> = {
     title: "Components/Link",
     component: Link,
     decorators: [
         (Story: React.ComponentType) => (
-            <BrowserRouter>
+            <BrowserRouter history={history}>
                 <Story />
             </BrowserRouter>
         )

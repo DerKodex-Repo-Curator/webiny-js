@@ -1,8 +1,13 @@
-import React, { createContext, useContext, useMemo, useState, useCallback } from "react";
-import type { RouteProps } from "@webiny/react-router";
-import { BrowserRouter, Route } from "@webiny/react-router";
-import type { GenericComponent, Decorator, DecoratorsCollection } from "@webiny/react-composition";
-import { CompositionProvider, compose } from "@webiny/react-composition";
+import React, { createContext, useContext, useMemo, useState, useCallback, useRef } from "react";
+import { createBrowserHistory } from "history";
+import { BrowserRouter, RouteProps, Route, Router } from "@webiny/react-router";
+import {
+    CompositionProvider,
+    GenericComponent,
+    compose,
+    Decorator,
+    DecoratorsCollection
+} from "@webiny/react-composition";
 import { Routes as SortRoutes } from "./core/Routes";
 import { DebounceRender } from "./core/DebounceRender";
 import { PluginsProvider } from "./core/Plugins";
@@ -59,6 +64,8 @@ export const AppBase = ({
         providers
     });
 
+    const history = useRef(createBrowserHistory());
+
     const addProvider = useCallback((component: Decorator<any>) => {
         setState(state => {
             if (state.providers.findIndex(m => m === component) > -1) {
@@ -94,7 +101,9 @@ export const AppBase = ({
         return function AppRouter() {
             const routerConfig = useRouterConfig();
             const combinedRoutes = [...routes, ...routerConfig.routes].map(r => {
-                return <Route path={r.path} element={r.element} key={r.path} />;
+                return (
+                    <Route name={r.name ?? r.path} path={r.path} element={r.element} key={r.path} />
+                );
             });
 
             return <SortRoutes key={routes.length} routes={combinedRoutes} />;
@@ -102,9 +111,11 @@ export const AppBase = ({
     }, [routes]);
 
     const Providers = useMemo(() => {
-        return compose(...(state.providers || []))(({ children }: ProviderProps) => {
-            return <DebounceRender wait={debounceRender}>{children}</DebounceRender>;
-        });
+        return React.memo(
+            compose(...(state.providers || []))(({ children }: ProviderProps) => {
+                return <DebounceRender wait={debounceRender}>{children}</DebounceRender>;
+            })
+        );
     }, [state.providers.length]) as ComponentWithChildren;
 
     Providers.displayName = "Providers";
@@ -113,15 +124,17 @@ export const AppBase = ({
         <AppContext.Provider value={appContext}>
             {children}
             <AppContainer>
-                <BrowserRouter>
-                    <Providers>
-                        <PluginsProvider>{state.plugins}</PluginsProvider>
-                        <DebounceRender wait={debounceRender}>
-                            <RouterWithConfig>
-                                <AppRouter />
-                            </RouterWithConfig>
-                        </DebounceRender>
-                    </Providers>
+                <BrowserRouter history={history.current}>
+                    <Router history={history.current} getBaseUrl={() => ""}>
+                        <Providers>
+                            <PluginsProvider>{state.plugins}</PluginsProvider>
+                            <DebounceRender wait={debounceRender}>
+                                <RouterWithConfig>
+                                    <AppRouter />
+                                </RouterWithConfig>
+                            </DebounceRender>
+                        </Providers>
+                    </Router>
                 </BrowserRouter>
             </AppContainer>
         </AppContext.Provider>
