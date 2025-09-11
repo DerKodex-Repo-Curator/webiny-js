@@ -19121,6 +19121,7 @@ __metadata:
     core-js: "npm:3.39.0"
     cross-env: "npm:^5.2.1"
     cross-fetch: "npm:^3.1.5"
+    custom-idp: "npm:1.0.0"
     custom-page-types: "npm:1.0.0"
     prop-types: "npm:^15.8.1"
     react: "npm:18.2.0"
@@ -23209,6 +23210,14 @@ __metadata:
   checksum: 10/86446c95b86bb3dec71503755b578db370a00397a332f9fd507b3cbbf514146535b840d5abf52611dcc84318004cfff3f00ef30549a3624c489d03fe2c1b1ef1
   languageName: node
   linkType: hard
+
+"custom-idp@npm:1.0.0, custom-idp@workspace:extensions/customIdp":
+  version: 0.0.0-use.local
+  resolution: "custom-idp@workspace:extensions/customIdp"
+  dependencies:
+    react: "npm:18.2.0"
+  languageName: unknown
+  linkType: soft
 
 "custom-page-types@npm:1.0.0, custom-page-types@workspace:extensions/customPageTypes":
   version: 0.0.0-use.local

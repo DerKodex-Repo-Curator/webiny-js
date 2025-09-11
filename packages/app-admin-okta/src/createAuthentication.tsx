@@ -101,31 +101,6 @@ export const createAuthentication = ({
 
                         return payload;
                     });
-                }),
-                new ApolloLinkPlugin(() => {
-                    return setContext(async (_, { headers }) => {
-                        // If "Authorization" header is already set, don't overwrite it.
-                        if (headers && headers.Authorization) {
-                            return { headers };
-                        }
-
-                        if (!(await oktaAuth.isAuthenticated())) {
-                            return { headers };
-                        }
-
-                        const idToken = oktaAuth.getIdToken();
-
-                        if (!idToken) {
-                            return { headers };
-                        }
-
-                        return {
-                            headers: {
-                                ...headers,
-                                Authorization: `Bearer ${idToken}`
-                            }
-                        };
-                    });
                 })
             );
         }, []);

@@ -1,7 +1,10 @@
 import minimatch from "minimatch";
 import type { Dispatch, SetStateAction } from "react";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { setContext } from "apollo-link-context";
 import type { IdTokenProvider, SecurityIdentity, SecurityPermission } from "~/types";
+import { plugins } from "@webiny/plugins";
+import { ApolloLinkPlugin } from "@webiny/app";
 
 export interface SecurityContext {
     identity: SecurityIdentity | null;
@@ -80,6 +83,34 @@ export const SecurityProvider = (props: SecurityProviderProps) => {
         }
         return identity.id || identity.login || null;
     }, [identity]);
+
+    useEffect(() => {
+        const authHeaderPlugin = new ApolloLinkPlugin(() => {
+            return setContext(async (_, { headers }) => {
+                // If "Authorization" header is already set, don't overwrite it.
+                if (headers && headers.Authorization) {
+                    return { headers };
+                }
+
+                const idToken = await idTokenProvider();
+
+                if (!idToken) {
+                    return { headers };
+                }
+
+                return {
+                    headers: {
+                        ...headers,
+                        Authorization: `Bearer ${idToken}`
+                    }
+                };
+            });
+        });
+
+        authHeaderPlugin.name = "security.authHeaderPlugin";
+
+        plugins.register(authHeaderPlugin);
+    }, [idTokenProvider]);
 
     const value: SecurityContext = useMemo(() => {
         return {

@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { setContext } from "apollo-link-context";
 import type ApolloClient from "apollo-client";
 import type { DocumentNode } from "graphql";
 import { useApolloClient } from "@apollo/react-hooks";
@@ -11,8 +10,6 @@ import type {
     User
 } from "@auth0/auth0-react";
 import { useAuth0, Auth0Provider } from "@auth0/auth0-react";
-import { plugins } from "@webiny/plugins";
-import { ApolloLinkPlugin } from "@webiny/app/plugins/ApolloLinkPlugin";
 import { useSecurity } from "@webiny/app-serverless-cms";
 import { useTenancy, withTenant } from "@webiny/app-tenancy";
 import type { SecurityPermission } from "@webiny/app-security/types";
@@ -136,30 +133,6 @@ export const createAuthentication = ({
                 const claims = await getIdTokenClaims();
                 return claims ? claims["__raw"] : undefined;
             });
-
-            plugins.register(
-                new ApolloLinkPlugin(() => {
-                    return setContext(async (_, { headers }) => {
-                        // If "Authorization" header is already set, don't overwrite it.
-                        if (headers && headers.Authorization) {
-                            return { headers };
-                        }
-
-                        const { idToken } = await getIdToken();
-
-                        if (!idToken) {
-                            return { headers };
-                        }
-
-                        return {
-                            headers: {
-                                ...headers,
-                                Authorization: `Bearer ${idToken}`
-                            }
-                        };
-                    });
-                })
-            );
         }, []);
 
         const loginSilently = async () => {

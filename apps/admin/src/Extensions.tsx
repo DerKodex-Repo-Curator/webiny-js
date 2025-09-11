@@ -3,10 +3,12 @@
 import React from "react";
 import { Extension as CustomPageTypesExtension } from "custom-page-types";
 import { Extension as SampleEcommerceExtension } from "sample-ecommerce";
+import { Extension as CustomIdpExtension } from "custom-idp";
 
 export const Extensions = () => {
     return (
         <>
+            <CustomIdpExtension />
             <CustomPageTypesExtension />
             <SampleEcommerceExtension />
         </>
