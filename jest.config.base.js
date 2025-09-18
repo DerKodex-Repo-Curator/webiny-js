@@ -121,7 +121,7 @@ const createGlobalSecondaryIndexes = options => {
                 { AttributeName: `GSI${current}_SK`, KeyType: "RANGE" }
             ],
             Projection: {
-                ProjectionType: "ALL"
+                ProjectionType: options.projectionType || "ALL"
             },
             ProvisionedThroughput: {
                 ReadCapacityUnits: 1,
@@ -200,11 +200,22 @@ const createDynaliteTables = (options = {}) => {
                     { AttributeName: `GSI4_PK`, AttributeType: "S" },
                     { AttributeName: `GSI4_SK`, AttributeType: "N" },
                     { AttributeName: `GSI5_PK`, AttributeType: "S" },
-                    { AttributeName: `GSI5_SK`, AttributeType: "N" }
+                    { AttributeName: `GSI5_SK`, AttributeType: "N" },
+                    { AttributeName: `GSI6_PK`, AttributeType: "S" },
+                    { AttributeName: `GSI6_SK`, AttributeType: "N" },
+                    { AttributeName: `GSI7_PK`, AttributeType: "S" },
+                    { AttributeName: `GSI7_SK`, AttributeType: "N" },
+                    { AttributeName: `GSI8_PK`, AttributeType: "S" },
+                    { AttributeName: `GSI8_SK`, AttributeType: "N" },
+                    { AttributeName: `GSI9_PK`, AttributeType: "S" },
+                    { AttributeName: `GSI9_SK`, AttributeType: "N" },
+                    { AttributeName: `GSI10_PK`, AttributeType: "S" },
+                    { AttributeName: `GSI10_SK`, AttributeType: "N" }
                 ],
                 ProvisionedThroughput: { ReadCapacityUnits: 1, WriteCapacityUnits: 1 },
                 GlobalSecondaryIndexes: createGlobalSecondaryIndexes({
-                    amount: 5
+                    amount: 10,
+                    projectionType: "KEYS_ONLY"
                 }),
                 data: options.data || [],
                 ttl: {

@@ -1,53 +1,49 @@
-import type { EntityQueryOptions } from "@webiny/db-dynamodb/toolbox.js";
-import type { IAuditLog, IStorageItem } from "~/storage/types.js";
-import type {
-    IStorageListByCreatedByParams,
-    IStorageListParams
-} from "~/storage/abstractions/Storage.js";
-import { createStartKey } from "~/storage/startKey.js";
-import { queryPerPage } from "@webiny/db-dynamodb";
+import type { IAuditLog, IIndexStorageItem } from "~/storage/types.js";
 import { BaseAccessPattern } from "~/storage/accessPatterns/BaseAccessPattern.js";
 import type {
     IAccessPatternCreateKeysResult,
+    IAccessPatternHandles,
     IAccessPatternListResult
 } from "~/storage/abstractions/AccessPattern.js";
+import type { IStorageListByCreatedByParams } from "~/storage/abstractions/Storage.js";
+
+interface ICreatePartitionKeyParams {
+    tenant: string;
+    createdBy: string;
+}
+
+const createPartitionKey = (params: ICreatePartitionKeyParams) => {
+    return `T#${params.tenant}#AUDIT_LOG#CREATEDBY#${params.createdBy}`;
+};
 
 export class CreatedByAccessPattern<
     T extends IStorageListByCreatedByParams = IStorageListByCreatedByParams
 > extends BaseAccessPattern<T> {
-    public canHandle(params: IStorageListParams): boolean {
-        if (params.app) {
-            return false;
-        } else if (params.action) {
-            return false;
-        } else if (params.entryId) {
-            return false;
-        } else if (params.version) {
-            return false;
-        } else if (!params.createdBy) {
-            return false;
-        }
-        return true;
+    public override handles(): IAccessPatternHandles {
+        return {
+            mustInclude: ["createdBy"],
+            mustNotInclude: ["app", "action", "entityId", "entity"]
+        };
     }
 
     public async list(params: T): Promise<IAccessPatternListResult> {
-        const options: EntityQueryOptions = {
-            limit: 25,
-            startKey: createStartKey(params),
-            index: this.index,
-            reverse: params.sort === "DESC"
-        };
-        return await queryPerPage<IStorageItem>({
-            entity: this.entity,
-            partitionKey: `T#${params.tenant}#AUDIT_LOG#USER#${params.createdBy}`,
+        const options = this.createOptions(params);
+
+        const result = await this.query<IIndexStorageItem>({
+            partitionKey: createPartitionKey(params),
             options
         });
+        return this.populateResult(result);
     }
 
     public createKeys(item: IAuditLog): IAccessPatternCreateKeysResult {
         const time = item.createdOn.getTime();
+
         return {
-            partitionKey: `T#${item.tenant}#AUDIT_LOG#USER#${item.createdBy.id}`,
+            partitionKey: createPartitionKey({
+                ...item,
+                createdBy: item.createdBy.id
+            }),
             sortKey: time
         };
     }
