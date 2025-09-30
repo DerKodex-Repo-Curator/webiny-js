@@ -534,6 +534,9 @@ Resources:
     Type: AWS::IAM::Role
     Properties:
       RoleName: !Ref RoleName
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement: []
       ManagedPolicyArns:
         - !Ref DeployWebinyPolicy1
         - !Ref DeployWebinyPolicy2
