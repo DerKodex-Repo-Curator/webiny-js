@@ -2,6 +2,12 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: Creates a single IAM role for CI/CD deployments of a Webiny project, with three managed policies containing required permissions.
 
+Parameters:
+  RoleName:
+    Type: String
+    Default: WebinyDeployRole
+    Description: Name of the IAM Role for Webiny deployments.
+
 Resources:
   DeployWebinyPolicy1:
     Type: AWS::IAM::ManagedPolicy
@@ -524,14 +530,11 @@ Resources:
               - iot:DeleteAuthorizer
               - iot:ListTagsForResource
 
-  # ================================
-  # Single Deploy Role
-  # ================================
-  WebinyDeployRole:
-    Type: AWS::IAM::Role
-    Properties:
-      RoleName: WebinyDeployRole
-      ManagedPolicyArns:
-        - !Ref DeployWebinyPolicy1
-        - !Ref DeployWebinyPolicy2
-        - !Ref DeployWebinyPolicy3
+        WebinyDeployRole:
+          Type: AWS::IAM::Role
+          Properties:
+            RoleName: !Ref RoleName
+            ManagedPolicyArns:
+              - !Ref DeployWebinyPolicy1
+              - !Ref DeployWebinyPolicy2
+              - !Ref DeployWebinyPolicy3
