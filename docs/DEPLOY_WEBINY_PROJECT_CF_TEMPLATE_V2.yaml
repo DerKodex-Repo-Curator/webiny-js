@@ -536,7 +536,7 @@ Resources:
       RoleName: !Ref RoleName
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
-        Statement: []
+        Statement: [ ]
       ManagedPolicyArns:
         - !Ref DeployWebinyPolicy1
         - !Ref DeployWebinyPolicy2
