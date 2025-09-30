@@ -530,11 +530,11 @@ Resources:
               - iot:DeleteAuthorizer
               - iot:ListTagsForResource
 
-        WebinyDeployRole:
-          Type: AWS::IAM::Role
-          Properties:
-            RoleName: !Ref RoleName
-            ManagedPolicyArns:
-              - !Ref DeployWebinyPolicy1
-              - !Ref DeployWebinyPolicy2
-              - !Ref DeployWebinyPolicy3
+  WebinyDeployRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Ref RoleName
+      ManagedPolicyArns:
+        - !Ref DeployWebinyPolicy1
+        - !Ref DeployWebinyPolicy2
+        - !Ref DeployWebinyPolicy3
