@@ -6,7 +6,7 @@ Parameters:
   RoleName:
     Type: String
     Default: WebinyDeployRole
-    Description: Name of the IAM Role for Webiny deployments.
+    Description: Name of the pre-created IAM Role for Webiny deployments.
 
 Resources:
   DeployWebinyPolicy1:
@@ -530,14 +530,20 @@ Resources:
               - iot:DeleteAuthorizer
               - iot:ListTagsForResource
 
-  WebinyDeployRole:
-    Type: AWS::IAM::Role
+  AttachPolicy1ToRole:
+    Type: AWS::IAM::RolePolicyAttachment
     Properties:
       RoleName: !Ref RoleName
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        Statement: [ ]
-      ManagedPolicyArns:
-        - !Ref DeployWebinyPolicy1
-        - !Ref DeployWebinyPolicy2
-        - !Ref DeployWebinyPolicy3
+      PolicyArn: !Ref DeployWebinyPolicy1
+
+    AttachPolicy2ToRole:
+      Type: AWS::IAM::RolePolicyAttachment
+      Properties:
+        RoleName: !Ref RoleName
+        PolicyArn: !Ref DeployWebinyPolicy2
+
+    AttachPolicy3ToRole:
+      Type: AWS::IAM::RolePolicyAttachment
+      Properties:
+        RoleName: !Ref RoleName
+        PolicyArn: !Ref DeployWebinyPolicy3
