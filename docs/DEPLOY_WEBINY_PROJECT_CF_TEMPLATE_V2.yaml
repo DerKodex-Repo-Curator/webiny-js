@@ -13,6 +13,8 @@ Resources:
     Type: AWS::IAM::ManagedPolicy
     Properties:
       ManagedPolicyName: DeployWebinyPolicy1
+      Roles:
+        - !Ref RoleName
       PolicyDocument:
         Version: "2012-10-17"
         Statement:
@@ -212,6 +214,8 @@ Resources:
     Type: AWS::IAM::ManagedPolicy
     Properties:
       ManagedPolicyName: DeployWebinyPolicy2
+      Roles:
+        - !Ref RoleName
       PolicyDocument:
         Version: "2012-10-17"
         Statement:
@@ -411,6 +415,8 @@ Resources:
     Type: AWS::IAM::ManagedPolicy
     Properties:
       ManagedPolicyName: DeployWebinyPolicy3
+      Roles:
+        - !Ref RoleName
       PolicyDocument:
         Version: "2012-10-17"
         Statement:
@@ -529,21 +535,3 @@ Resources:
               - iot:UpdateAuthorizer
               - iot:DeleteAuthorizer
               - iot:ListTagsForResource
-
-  AttachPolicy1ToRole:
-    Type: AWS::IAM::RolePolicyAttachment
-    Properties:
-      RoleName: !Ref RoleName
-      PolicyArn: !Ref DeployWebinyPolicy1
-
-    AttachPolicy2ToRole:
-      Type: AWS::IAM::RolePolicyAttachment
-      Properties:
-        RoleName: !Ref RoleName
-        PolicyArn: !Ref DeployWebinyPolicy2
-
-    AttachPolicy3ToRole:
-      Type: AWS::IAM::RolePolicyAttachment
-      Properties:
-        RoleName: !Ref RoleName
-        PolicyArn: !Ref DeployWebinyPolicy3
