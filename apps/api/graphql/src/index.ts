@@ -39,35 +39,17 @@ import { createHeadlessCmsScheduler } from "@webiny/api-headless-cms-scheduler";
 /**
  * #### TESTING sync system
  */
-import { createSyncSystem } from "@webiny/api-sync-system";
-import { createEventBridgeClient } from "@webiny/aws-sdk/client-eventbridge/index.js";
 import { createSchedulerClient } from "@webiny/aws-sdk/client-scheduler";
 
 const debug = process.env.DEBUG === "true";
 const documentClient = getDocumentClient();
 
-const syncSystem = createSyncSystem({
-    getDocumentClient: () => {
-        return documentClient;
-    },
-    getEventBridgeClient: params => {
-        return createEventBridgeClient(params);
-    },
-    system: {
-        env: process.env.WEBINY_ENV,
-        variant: process.env.WEBINY_ENV_VARIANT,
-        region: process.env.AWS_REGION,
-        version: process.env.WEBINY_VERSION
-    },
-    plugins: []
-});
 /**
  * ####
  */
 
 export const handler = createHandler({
     plugins: [
-        syncSystem.plugins(),
         createBenchmarkEnablePlugin(),
         createWcpContext(),
         createWcpGraphQL(),

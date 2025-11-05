@@ -53,3 +53,5 @@ lerna.json
 .normalizedPrimitivesFigmaExport.json
 packages/tasks/tpl/*
 nextjs
+.claude/
+CLAUDE.local.md

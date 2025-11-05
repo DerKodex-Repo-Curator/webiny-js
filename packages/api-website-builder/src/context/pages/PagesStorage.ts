@@ -148,6 +148,11 @@ export class PagesStorage implements WbPagesStorageOperations {
             tenant: entry.tenant,
             locale: entry.locale,
             webinyVersion: entry.webinyVersion,
+            firstPublishedOn: entry.firstPublishedOn,
+            lastPublishedOn: entry.lastPublishedOn,
+            firstPublishedBy: entry.firstPublishedBy,
+            lastPublishedBy: entry.lastPublishedBy,
+
             ...entry.values
         } as WbPage;
     }

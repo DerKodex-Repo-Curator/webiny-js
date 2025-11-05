@@ -9,6 +9,10 @@ export class GetPageById implements IGetPageById {
     }
 
     async execute(id: string) {
-        return await this.getOperation(id);
+        try {
+            return await this.getOperation(id);
+        } catch {
+            return null;
+        }
     }
 }

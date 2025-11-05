@@ -20,6 +20,10 @@ export interface WbPage {
     savedBy: WbIdentity;
     modifiedOn: string;
     modifiedBy: WbIdentity;
+    firstPublishedOn: string;
+    lastPublishedOn: string;
+    firstPublishedBy: WbIdentity;
+    lastPublishedBy: WbIdentity;
     tenant: string;
     locale: string;
     webinyVersion: string;

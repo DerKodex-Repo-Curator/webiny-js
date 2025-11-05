@@ -4793,6 +4793,35 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@demo/tenant-management-admin@npm:1.0.0, @demo/tenant-management-admin@workspace:extensions/tenantManagement/admin":
+  version: 0.0.0-use.local
+  resolution: "@demo/tenant-management-admin@workspace:extensions/tenantManagement/admin"
+  dependencies:
+    "@demo/tenant-management-shared": "npm:0.0.0"
+    "@webiny/admin-ui": "npm:0.0.0"
+    "@webiny/app-aco": "npm:0.0.0"
+    "@webiny/app-admin": "npm:0.0.0"
+    "@webiny/app-headless-cms": "npm:0.0.0"
+    "@webiny/react-router": "npm:0.0.0"
+    react: "npm:18.2.0"
+  languageName: unknown
+  linkType: soft
+
+"@demo/tenant-management-api@npm:1.0.0, @demo/tenant-management-api@workspace:extensions/tenantManagement/api":
+  version: 0.0.0-use.local
+  resolution: "@demo/tenant-management-api@workspace:extensions/tenantManagement/api"
+  dependencies:
+    "@webiny/api-headless-cms": "npm:0.0.0"
+    "@webiny/api-serverless-cms": "npm:0.0.0"
+  languageName: unknown
+  linkType: soft
+
+"@demo/tenant-management-shared@npm:0.0.0, @demo/tenant-management-shared@workspace:extensions/tenantManagement/shared":
+  version: 0.0.0-use.local
+  resolution: "@demo/tenant-management-shared@workspace:extensions/tenantManagement/shared"
+  languageName: unknown
+  linkType: soft
+
 "@discoveryjs/json-ext@npm:^0.5.3":
   version: 0.5.7
   resolution: "@discoveryjs/json-ext@npm:0.5.7"
@@ -19798,6 +19827,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "admin@workspace:apps/admin"
   dependencies:
+    "@demo/tenant-management-admin": "npm:1.0.0"
     "@editorjs/delimiter": "npm:^1.4.2"
     "@editorjs/list": "npm:^1.10.0"
     "@editorjs/quote": "npm:^2.7.2"
@@ -20243,6 +20273,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "api-graphql@workspace:apps/api/graphql"
   dependencies:
+    "@demo/tenant-management-api": "npm:1.0.0"
     "@webiny/api-aco": "npm:0.0.0"
     "@webiny/api-admin-users": "npm:0.0.0"
     "@webiny/api-admin-users-so-ddb": "npm:0.0.0"
@@ -20282,6 +20313,7 @@ __metadata:
     "@webiny/handler-graphql": "npm:0.0.0"
     "@webiny/project-utils": "npm:0.0.0"
     "@webiny/tasks": "npm:0.0.0"
+    fetch-document-html: "npm:1.0.0"
     graphql-request: "npm:^3.7.0"
   languageName: unknown
   linkType: soft
@@ -27351,6 +27383,12 @@ __metadata:
   checksum: 10/2566ed8f6372d486767092cea8b615d12fb277e4ddf9c415da249aa9e74ca8bbe5ffdf07ebfaaa39ed313abfac7958949007d0f8430017d171a384e27a1b09fa
   languageName: node
   linkType: hard
+
+"fetch-document-html@npm:1.0.0, fetch-document-html@workspace:extensions/fetchDocumentHtml":
+  version: 0.0.0-use.local
+  resolution: "fetch-document-html@workspace:extensions/fetchDocumentHtml"
+  languageName: unknown
+  linkType: soft
 
 "fetch-retry@npm:^5.0.2":
   version: 5.0.6

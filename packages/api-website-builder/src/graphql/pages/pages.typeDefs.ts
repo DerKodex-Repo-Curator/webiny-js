@@ -137,6 +137,9 @@ export const pagesTypeDefs = /* GraphQL */ `
         status_not: String
         status_in: [String!]
         status_not_in: [String!]
+        properties: JSON
+        metadata: JSON
+        extensions: JSON
         AND: [WbPagesListWhereInput!]
         OR: [WbPagesListWhereInput!]
     }
