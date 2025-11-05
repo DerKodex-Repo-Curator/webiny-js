@@ -6,6 +6,7 @@ import { useResponsiveContainer } from "~/BaseEditor/defaultConfig/Content/Previ
 import { OverlayLoader } from "@webiny/admin-ui";
 import type { ViewportManager } from "@webiny/website-builder-sdk";
 import { observer } from "mobx-react-lite";
+import { usePreviewData } from "~/BaseEditor/hooks/usePreviewData";
 
 interface IframeProps {
     url: string;
@@ -17,7 +18,8 @@ interface IframeProps {
 
 export const Iframe = observer(({ url, timestamp, ...props }: IframeProps) => {
     const iframeRef = useRef<HTMLIFrameElement>(null);
-    const previewWidth = useResponsiveContainer(props.viewportManager);
+    const previewSize = useResponsiveContainer(props.viewportManager);
+    const { viewport } = usePreviewData();
 
     const iframeUrl = useMemo(() => {
         const localUrl = new URL(url);
@@ -28,7 +30,13 @@ export const Iframe = observer(({ url, timestamp, ...props }: IframeProps) => {
     return (
         <div
             key={iframeUrl}
-            className={"wby-relative wby-flex wby-flex-col wby-items-center"}
+            /* Height = viewport height - top bar - address bar - breadcrumbs. */
+            style={{
+                height: "calc(100vh - 43px - 50px - 31px)"
+            }}
+            className={
+                "wby-relative wby-flex wby-flex-col wby-items-center wby-w-full wby-overflow-auto"
+            }
             data-role={"responsive-container"}
         >
             <ConnectEditorToPreview iframeRef={iframeRef} onConnected={props.onConnected} />
@@ -40,16 +48,21 @@ export const Iframe = observer(({ url, timestamp, ...props }: IframeProps) => {
                     className={"wby-bg-neutral-base"}
                 />
             ) : null}
-            {/* Height = viewport height - top bar - address bar - breadcrumbs. */}
+            {/* Content wrapper - sized by iframe content */}
             <div
-                className="wby-min-h-[calc(100vh-43px-50px-31px)] wby-max-h-[calc(100vh-43px-50px)] wby-box-border  wby-overflow-hidden"
-                style={{ width: previewWidth }}
+                style={{
+                    position: "relative",
+                    width: previewSize,
+                    minHeight: `${viewport.scrollHeight}px`
+                }}
+                data-role={"content-wrapper"}
             >
                 <ElementOverlays />
                 <iframe
+                    scrolling="no"
                     id={"preview-iframe"}
                     className={
-                        "wby-w-full wby-bg-white wby-border-none wby-overflow-scroll wby-min-h-[inherit] wby-pointer-events-none"
+                        "wby-absolute wby-block wby-top-0 wby-left-0 wby-w-full w-h-full wby-bg-white wby-border-none wby-min-h-[inherit] wby-pointer-events-none"
                     }
                     src={iframeUrl}
                     ref={iframeRef}

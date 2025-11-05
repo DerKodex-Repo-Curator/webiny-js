@@ -237,9 +237,17 @@ export type EditorViewportInfo = PreviewViewportInfo & {
 };
 
 export type PreviewViewportInfo = {
+    // Viewport width (only the visible part)
     width: number;
+    // Viewport height (only the visible part)
     height: number;
+    // Full iframe width
+    scrollWidth: number;
+    // Full iframe height
+    scrollHeight: number;
+    // Iframe horizontal scroll offset
     scrollX: number;
+    // Iframe vertical scroll offest
     scrollY: number;
 };
 

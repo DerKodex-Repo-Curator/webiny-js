@@ -4,6 +4,7 @@
     "packages": [
       "packages/*",
       "migrations",
+      "nextjs",
       "cypress-tests",
       "apps/admin",
       "apps/custom",
