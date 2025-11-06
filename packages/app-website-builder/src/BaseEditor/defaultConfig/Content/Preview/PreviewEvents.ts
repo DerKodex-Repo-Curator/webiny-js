@@ -11,17 +11,14 @@ import {
 import defaultImage from "@webiny/icons/extension.svg";
 import { Commands } from "~/BaseEditor";
 import { $createElement } from "~/editorSdk/utils";
-import type { ScrollTracker } from "./ScrollTracker";
 
 export class PreviewEvents {
     private editor: Editor;
     private editorEventsRegistered = false;
     private messenger: Messenger | undefined;
-    private scrollTracker: ScrollTracker;
     private listeners: Array<() => void> = [];
 
-    constructor(editor: Editor, scrollTracker: ScrollTracker) {
-        this.scrollTracker = scrollTracker;
+    constructor(editor: Editor) {
         this.editor = editor;
     }
 
@@ -64,19 +61,6 @@ export class PreviewEvents {
                 } else {
                     this.getMessenger().send("document.set", event.state);
                 }
-            }),
-            // Scroll start
-            this.scrollTracker.onScrollStart(() => {
-                this.editor.updateEditor(state => {
-                    state.showOverlays = false;
-                });
-            }),
-
-            // Scroll end
-            this.scrollTracker.onScrollEnd(() => {
-                this.editor.updateEditor(state => {
-                    state.showOverlays = true;
-                });
             }),
 
             // Element preview
@@ -177,8 +161,10 @@ export class PreviewEvents {
     }
 
     private getIframeBox() {
-        const iframe = document.getElementById("preview-iframe");
-        if (!iframe) {
+        const previewContainer = document.getElementById("preview-container");
+        const previewBody = document.getElementById("preview-body");
+
+        if (!previewContainer || !previewBody) {
             return {
                 top: 0,
                 left: 0,
@@ -187,13 +173,18 @@ export class PreviewEvents {
             };
         }
 
-        const iframeRect = iframe.getBoundingClientRect();
+        /**
+         * We need to use the `preview-container` to get the exact position from the top (we MUST ignore scroll position).
+         * However, for everything else we use the actual `preview-body`,
+         */
+        const containerRect = previewContainer.getBoundingClientRect();
+        const bodyRect = previewBody.getBoundingClientRect();
 
         return {
-            top: iframeRect.top,
-            left: iframeRect.left,
-            width: iframeRect.width,
-            height: iframeRect.height
+            top: containerRect.top,
+            left: bodyRect.left,
+            width: bodyRect.width,
+            height: bodyRect.height
         };
     }
 

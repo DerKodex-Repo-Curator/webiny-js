@@ -29,6 +29,7 @@ export const Iframe = observer(({ url, timestamp, ...props }: IframeProps) => {
 
     return (
         <div
+            id={"preview-container"}
             key={iframeUrl}
             /* Height = viewport height - top bar - address bar - breadcrumbs. */
             style={{
@@ -37,7 +38,6 @@ export const Iframe = observer(({ url, timestamp, ...props }: IframeProps) => {
             className={
                 "wby-relative wby-flex wby-flex-col wby-items-center wby-w-full wby-overflow-auto"
             }
-            data-role={"responsive-container"}
         >
             <ConnectEditorToPreview iframeRef={iframeRef} onConnected={props.onConnected} />
             {props.showLoading ? (
@@ -50,12 +50,12 @@ export const Iframe = observer(({ url, timestamp, ...props }: IframeProps) => {
             ) : null}
             {/* Content wrapper - sized by iframe content */}
             <div
+                id={"preview-body"}
                 style={{
                     position: "relative",
                     width: previewSize,
                     minHeight: `${viewport.scrollHeight}px`
                 }}
-                data-role={"content-wrapper"}
             >
                 <ElementOverlays />
                 <iframe

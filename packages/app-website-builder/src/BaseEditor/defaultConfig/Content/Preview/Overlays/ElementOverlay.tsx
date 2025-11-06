@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { cn } from "@webiny/admin-ui";
 import { useDocumentEditor } from "~/DocumentEditor";
 import type { Box } from "../Box";
@@ -11,21 +11,28 @@ import { useStyles } from "~/BaseEditor/defaultConfig/Sidebar/StyleSettings/useS
 interface ElementOverlayProps {
     elementId: string;
     isSelected: boolean;
-    isHighlighted: boolean;
     previewBox: Box;
     editorBox: Box;
     children: React.ReactNode;
 }
 
 export const ElementOverlay = React.memo(
-    ({ previewBox, elementId, isSelected, isHighlighted, children }: ElementOverlayProps) => {
+    ({ previewBox, elementId, isSelected, children }: ElementOverlayProps) => {
+        const [isHighlighted, setIsHighlighted] = useState(false);
         const editor = useDocumentEditor();
         const componentManifest = useElementComponentManifest(previewBox.id);
 
         const onClick = useCallback((event: React.MouseEvent) => {
-            console.log("element clicked", elementId);
             event.stopPropagation();
             $selectElement(editor, elementId);
+        }, []);
+
+        const setHighlighted = useCallback(() => {
+            setIsHighlighted(() => true);
+        }, []);
+
+        const setDimmed = useCallback(() => {
+            setIsHighlighted(() => false);
         }, []);
 
         const dnd = useIsDragging();
@@ -34,11 +41,9 @@ export const ElementOverlay = React.memo(
             return null;
         }
 
-        // const pointerEvents = isSelected || isHighlighted ? "auto" : "none";
         const pointerEvents = "auto";
         const componentName = componentManifest.label ?? componentManifest.name;
         const boxState = isSelected ? "active" : isHighlighted && !dnd ? "hover" : null;
-        const isVisible = (isHighlighted && !dnd) || isSelected;
 
         return (
             <Draggable
@@ -48,10 +53,23 @@ export const ElementOverlay = React.memo(
             >
                 {({ isDragging, dragRef }) =>
                     dragRef(
-                        <div>
+                        <div
+                            data-element-id={elementId}
+                            onMouseEnter={setHighlighted}
+                            onMouseLeave={setDimmed}
+                            style={{
+                                position: "absolute",
+                                pointerEvents,
+                                zIndex: 100 + previewBox.depth,
+                                top: previewBox.top,
+                                left: previewBox.left,
+                                width: previewBox.width,
+                                height: previewBox.height
+                            }}
+                        >
                             <div
                                 className={cn(
-                                    "wby-absolute wby-box-border wby-text-right",
+                                    "wby-absolute wby-box-border wby-text-right wby-top-0 wby-left-0 wby-w-full wby-h-full",
                                     "data-[state=hover]:wby-border-md data-[state=hover]:wby-border-success-default",
                                     "data-[state=active]:wby-border-md data-[state=active]:wby-border-accent-default"
                                 )}
@@ -60,14 +78,6 @@ export const ElementOverlay = React.memo(
                                 data-element-id={elementId}
                                 data-role={"element-overlay"}
                                 data-depth={previewBox.depth}
-                                style={{
-                                    zIndex: 100 + previewBox.depth,
-                                    top: previewBox.top,
-                                    left: previewBox.left,
-                                    width: previewBox.width,
-                                    height: previewBox.height,
-                                    pointerEvents
-                                }}
                             >
                                 {isSelected ? (
                                     <AllMarginStripes
@@ -78,14 +88,9 @@ export const ElementOverlay = React.memo(
                                 {children}
                             </div>
                             <div
+                                className={"wby-w-full wby-h-full wby-pointer-events-none"}
                                 data-role={"opacity-overlay"}
                                 style={{
-                                    position: "absolute",
-                                    zIndex: 100 + previewBox.depth,
-                                    top: previewBox.top,
-                                    left: previewBox.left,
-                                    width: previewBox.width,
-                                    height: previewBox.height,
                                     backgroundColor: "white",
                                     opacity: isDragging ? 0.7 : 0
                                 }}
@@ -93,19 +98,15 @@ export const ElementOverlay = React.memo(
                             <div
                                 data-role={"element-overlay-label"}
                                 data-label-for={previewBox.id}
-                                data-state={boxState}
+                                data-state={isDragging ? "dragging" : boxState}
+                                onClick={onClick}
                                 className={cn(
-                                    "wby-absolute wby-text-sm wby-text-neutral-light wby-p-xs",
-                                    "data-[state=hover]:wby-bg-success-default",
-                                    "data-[state=active]:wby-bg-primary-default"
+                                    "wby-absolute wby-text-sm wby-text-neutral-light wby-p-xs wby-opacity-0 wby-pointer-events-auto",
+                                    "data-[state=hover]:wby-bg-success-default data-[state=hover]:wby-opacity-100",
+                                    "data-[state=active]:wby-bg-primary-default data-[state=active]:wby-opacity-100",
+                                    "data-[state=dragging]:wby-opacity-30"
                                 )}
-                                style={{
-                                    pointerEvents: "auto",
-                                    zIndex: 100 + previewBox.depth,
-                                    top: previewBox.top - 24,
-                                    left: previewBox.left,
-                                    opacity: isDragging ? 0.3 : isVisible ? 1 : 0
-                                }}
+                                style={{ top: -24 }}
                             >
                                 {componentName}
                             </div>

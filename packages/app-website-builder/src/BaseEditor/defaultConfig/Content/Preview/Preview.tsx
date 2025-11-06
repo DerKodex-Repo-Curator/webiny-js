@@ -1,16 +1,13 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import type { Messenger } from "@webiny/website-builder-sdk";
+import { ViewportManager } from "@webiny/website-builder-sdk";
+import { mouseTracker } from "@webiny/website-builder-sdk";
 import { useDocumentEditor } from "~/DocumentEditor";
 import { AddressBar } from "./AddressBar";
 import { Iframe } from "./Iframe";
-import { HoverManager } from "./HoverManager";
 import { DropZoneManager } from "./DropZoneManager";
 import { DropZoneManagerProvider } from "./DropZoneManagerProvider";
-import { Boxes } from "~/BaseEditor/hooks/Boxes";
-import { ScrollTracker } from "~/BaseEditor/defaultConfig/Content/Preview/ScrollTracker";
 import { KeyboardShortcuts } from "./KeyboardShortcuts";
-import { ViewportManager } from "@webiny/website-builder-sdk";
-import { mouseTracker } from "@webiny/website-builder-sdk";
 import { Commands } from "~/BaseEditor";
 import { useSelectFromEditor } from "~/BaseEditor/hooks/useSelectFromEditor";
 import { AwaitIframeUrl } from "~/BaseEditor/defaultConfig/Content/Preview/AwaitIframeUrl";
@@ -23,31 +20,12 @@ export const Preview = () => {
 
     const loadingPreview = useSelectFromEditor(state => state.loadingPreview);
 
-    const scrollTracker = useMemo(() => {
-        return new ScrollTracker(window, e => {
-            const source = e.target as HTMLDivElement | null;
-
-            if (!source) {
-                return false;
-            }
-
-            return true;
-        });
-    }, []);
-
-    const hoverManager = useMemo(() => {
-        return new HoverManager(mouseTracker, () => {
-            const editorState = editor.getEditorState().read();
-            return new Boxes(editorState.boxes.editor).filter(box => box.id !== "root");
-        });
-    }, [mouseTracker]);
-
     const viewportManager = useMemo(() => {
         return new ViewportManager();
     }, []);
 
     const previewEvents = useMemo(() => {
-        return new PreviewEvents(editor, scrollTracker);
+        return new PreviewEvents(editor);
     }, []);
 
     const dropzoneManager = useMemo(() => {
@@ -80,19 +58,16 @@ export const Preview = () => {
 
     // Start various trackers
     useEffect(() => {
-        scrollTracker.start();
         mouseTracker.start();
         dropzoneManager.start();
 
         return () => {
             dropzoneManager.stop();
             mouseTracker.stop();
-            scrollTracker.destroy();
             viewportManager.destroy();
-            hoverManager.destroy();
             previewEvents.destroy();
         };
-    }, [dropzoneManager, scrollTracker, mouseTracker]);
+    }, [dropzoneManager, mouseTracker]);
 
     // Update mouse position while dragging
     useEffect(() => {
@@ -102,15 +77,8 @@ export const Preview = () => {
 
         window.addEventListener("dragover", setMousePositionFromDrag);
 
-        const offHoverChange = hoverManager.onHoverChange(id => {
-            editor.updateEditor(state => {
-                state.highlightedElement = id;
-            });
-        });
-
         return () => {
             window.removeEventListener("dragover", setMousePositionFromDrag);
-            offHoverChange();
         };
     }, []);
 
