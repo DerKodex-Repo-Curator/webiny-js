@@ -3,7 +3,7 @@ import { format, addMinutes } from "date-fns";
 
 import { Grid, Cell } from "@webiny/ui/Grid";
 import { Dialog, DialogContent, DialogTitle, DialogCancel, DialogActions } from "@webiny/ui/Dialog";
-import { CodeEditor } from "@webiny/ui/CodeEditor";
+import { CodeEditor } from "@webiny/admin-ui";
 import { Tooltip } from "@webiny/ui/Tooltip";
 
 import { Action } from "~/views/Logs/Table";
@@ -86,10 +86,10 @@ export const Preview = ({ auditLog, onClose, hasAccessToUsers }: HeaderProps) =>
                         <Text use="overline">Payload</Text>
                         <PayloadWrapper>
                             <CodeEditor
-                                mode="json"
+                                language="json"
                                 theme="chrome"
                                 value={JSON.stringify(JSON.parse(auditLog.data), null, 2)}
-                                readOnly
+                                disabled={true}
                             />
                         </PayloadWrapper>
                     </Cell>

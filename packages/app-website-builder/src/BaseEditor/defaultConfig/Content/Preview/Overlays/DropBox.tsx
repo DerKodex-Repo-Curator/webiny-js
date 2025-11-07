@@ -17,13 +17,18 @@ export const DropBox = React.memo(
     ({ box, onDrop }: DropBoxProps) => {
         const isDragging = useIsDragging();
 
-        const [{ isOver }, dropRef] = useDrop<
+        const [{ isOver, item }, dropRef] = useDrop<
             any,
             unknown,
-            { item: { name: string }; isOver: boolean }
+            { item: { name: string; id?: string }; isOver: boolean }
         >(() => ({
             accept: "ELEMENT",
             drop: item => {
+                // Prevent dropping the element into itself!
+                if (item?.id === box.parentId) {
+                    return;
+                }
+
                 onDrop({
                     item,
                     target: { parentId: box.parentId, index: 0, slot: box.parentSlot }
@@ -35,7 +40,7 @@ export const DropBox = React.memo(
             })
         }));
 
-        const canAccept = isDragging;
+        const canAccept = isDragging && item?.id !== box.parentId;
         const disabled = "wby-border-neutral-muted wby-fill-neutral-disabled";
         const enabled = "wby-border-success-default wby-fill-success";
         const mouseOver = "wby-border-accent-default wby-fill-accent-default";
@@ -58,7 +63,8 @@ export const DropBox = React.memo(
                     top: box.top,
                     left: box.left,
                     width: box.width,
-                    height: box.height
+                    height: box.height,
+                    pointerEvents: canAccept ? "auto" : "none"
                 }}
             >
                 <Icon

@@ -1,38 +1,45 @@
-import React from "react";
-import AceEditor from "react-ace/lib/ace";
-import { makeDecoratable } from "~/utils";
+import React, { useMemo } from "react";
+import type { EditorProps } from "@monaco-editor/react";
+import MonacoEditor from "@monaco-editor/react";
+import type { editor } from "monaco-editor";
+import { makeDecoratable } from "~/utils.js";
 
-// Modes
-import "ace-builds/src-noconflict/mode-html";
-import "ace-builds/src-noconflict/mode-json";
-// Extensions
-import "ace-builds/src-noconflict/ext-searchbox";
-// Themes
-import "ace-builds/src-noconflict/theme-github";
-import "ace-builds/src-noconflict/theme-twilight";
-import "ace-builds/src-noconflict/theme-chrome";
-
-interface CodeEditorPrimitiveProps extends React.ComponentProps<typeof AceEditor> {
-    mode: string;
+interface CodeEditorPrimitiveProps extends Partial<EditorProps> {
     disabled?: boolean;
 }
 
+const monacoOptions: editor.IEditorConstructionOptions = {
+    readOnly: false,
+    minimap: {
+        enabled: false
+    }
+};
+
 const DecoratableCodeEditorPrimitive = ({
     value,
-    theme = "github",
     disabled,
+    options: optionsInput,
     ...rest
 }: CodeEditorPrimitiveProps) => {
+    // Editor is readonly if it's explicitly disabled, or if there's no `onChange` passed via props.
+    const readOnly = [disabled, rest.onChange].filter(Boolean).length === 0;
+
+    const options = useMemo((): editor.IDiffEditorConstructionOptions => {
+        return {
+            ...monacoOptions,
+            ...optionsInput,
+            domReadOnly: readOnly,
+            readOnly
+        };
+    }, [disabled, rest.onChange]);
+
     return (
-        <AceEditor
-            value={value ? String(value) : ""}
-            theme={theme}
-            readOnly={disabled}
+        <MonacoEditor
+            height={"calc(100vh - 400px)"}
+            language={"json"}
+            defaultValue={value}
+            options={options}
             {...rest}
-            width="100%"
-            editorProps={{
-                $blockScrolling: Infinity // Suppresses scrolling warning in console.
-            }}
         />
     );
 };

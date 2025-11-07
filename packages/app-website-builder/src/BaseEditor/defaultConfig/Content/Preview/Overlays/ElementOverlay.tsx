@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import { cn } from "@webiny/admin-ui";
 import { useDocumentEditor } from "~/DocumentEditor";
 import type { Box } from "../Box";
-import { $selectElement } from "~/editorSdk/utils";
+import { $highlightElement, $selectElement } from "~/editorSdk/utils";
 import { Draggable } from "~/BaseEditor/components/Draggable";
 import { useIsDragging } from "~/BaseEditor/defaultConfig/Content/Preview/useIsDragging";
 import { useElementComponentManifest } from "~/BaseEditor/defaultConfig/Content/Preview/useElementComponentManifest";
@@ -11,14 +11,13 @@ import { useStyles } from "~/BaseEditor/defaultConfig/Sidebar/StyleSettings/useS
 interface ElementOverlayProps {
     elementId: string;
     isSelected: boolean;
+    isHighlighted: boolean;
     previewBox: Box;
     editorBox: Box;
-    children: React.ReactNode;
 }
 
 export const ElementOverlay = React.memo(
-    ({ previewBox, elementId, isSelected, children }: ElementOverlayProps) => {
-        const [isHighlighted, setIsHighlighted] = useState(false);
+    ({ previewBox, elementId, isSelected, isHighlighted }: ElementOverlayProps) => {
         const editor = useDocumentEditor();
         const componentManifest = useElementComponentManifest(previewBox.id);
 
@@ -27,12 +26,14 @@ export const ElementOverlay = React.memo(
             $selectElement(editor, elementId);
         }, []);
 
-        const setHighlighted = useCallback(() => {
-            setIsHighlighted(() => true);
+        const setHighlighted = useCallback((event: React.MouseEvent) => {
+            event.stopPropagation();
+            $highlightElement(editor, elementId);
         }, []);
 
-        const setDimmed = useCallback(() => {
-            setIsHighlighted(() => false);
+        const unsetHighlighted = useCallback((event: React.MouseEvent) => {
+            event.stopPropagation();
+            $highlightElement(editor, null);
         }, []);
 
         const dnd = useIsDragging();
@@ -56,7 +57,7 @@ export const ElementOverlay = React.memo(
                         <div
                             data-element-id={elementId}
                             onMouseEnter={setHighlighted}
-                            onMouseLeave={setDimmed}
+                            onMouseLeave={unsetHighlighted}
                             style={{
                                 position: "absolute",
                                 pointerEvents,
@@ -64,7 +65,8 @@ export const ElementOverlay = React.memo(
                                 top: previewBox.top,
                                 left: previewBox.left,
                                 width: previewBox.width,
-                                height: previewBox.height
+                                height: previewBox.height,
+                                opacity: isDragging ? 0.7 : 1
                             }}
                         >
                             <div
@@ -85,13 +87,16 @@ export const ElementOverlay = React.memo(
                                         previewBox={previewBox}
                                     />
                                 ) : null}
-                                {children}
                             </div>
                             <div
-                                className={"wby-w-full wby-h-full wby-pointer-events-none"}
                                 data-role={"opacity-overlay"}
+                                className={
+                                    "wby-pointer-events-none wby-absolute wby-top-0 wby-left-0 wby-bg-white"
+                                }
                                 style={{
-                                    backgroundColor: "white",
+                                    zIndex: 100 + previewBox.depth,
+                                    width: previewBox.width,
+                                    height: previewBox.height,
                                     opacity: isDragging ? 0.7 : 0
                                 }}
                             ></div>

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { CodeEditorPrimitive } from "./CodeEditorPrimitive";
+import { CodeEditorPrimitive } from "./CodeEditorPrimitive.js";
 
 const meta: Meta<typeof CodeEditorPrimitive> = {
     title: "Components/Form Primitives/CodeEditor",

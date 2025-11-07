@@ -15379,6 +15379,7 @@ __metadata:
     "@fortawesome/free-solid-svg-icons": "npm:^6.0.0"
     "@fortawesome/react-fontawesome": "npm:^0.1.17"
     "@minoru/react-dnd-treeview": "npm:^3.5.2"
+    "@monaco-editor/react": "npm:^4.7.0"
     "@storybook/addon-a11y": "npm:7.6.20"
     "@storybook/addon-essentials": "npm:7.6.20"
     "@storybook/react": "npm:7.6.20"
@@ -15396,7 +15397,6 @@ __metadata:
     "@webiny/react-composition": "npm:0.0.0"
     "@webiny/react-router": "npm:0.0.0"
     "@webiny/utils": "npm:0.0.0"
-    ace-builds: "npm:^1.37.1"
     bytes: "npm:^3.1.2"
     chalk: "npm:^4.1.2"
     class-variance-authority: "npm:^0.7.0"
@@ -15411,7 +15411,6 @@ __metadata:
     prettier: "npm:^2.8.8"
     radix-ui: "npm:^1.4.2"
     react: "npm:18.2.0"
-    react-ace: "npm:^13.0.0"
     react-color: "npm:^2.19.3"
     react-custom-scrollbars: "npm:^4.2.1"
     react-dnd: "npm:^16.0.1"
@@ -19926,13 +19925,6 @@ __metadata:
   version: 0.4.1
   resolution: "accounting@npm:0.4.1"
   checksum: 10/01d27e58d63a4a4bf7f6f6be0d7ccb523f8332d8d9d32b6a6fbe3cb8f8c56ae2269fd77c0ebb8202e149bdcaa4dc7177b546a2e6f5f5b26ad78528f8bd821dcf
-  languageName: node
-  linkType: hard
-
-"ace-builds@npm:^1.36.3, ace-builds@npm:^1.37.1":
-  version: 1.37.5
-  resolution: "ace-builds@npm:1.37.5"
-  checksum: 10/cf8e0d0fe2a3cfbf69cf3e441c32523f8ec4a6ad5341cdfbeaf669f3ceed2ea136bfc60170f4b0757a98dab74f98a0e446984aff09a0a45f203aa02d6d031157
   languageName: node
   linkType: hard
 
@@ -25333,13 +25325,6 @@ __metadata:
   version: 1.2.2
   resolution: "didyoumean@npm:1.2.2"
   checksum: 10/de7f11b6a0c8c61018629b7f405bb9746d6e994ce87c1a4b7655c3c718442dc69037a3d46d804950604fd9cbe85c074f7b224a119fc1bda851690a74540c6cf8
-  languageName: node
-  linkType: hard
-
-"diff-match-patch@npm:^1.0.5":
-  version: 1.0.5
-  resolution: "diff-match-patch@npm:1.0.5"
-  checksum: 10/fd1ab417eba9559bda752a4dfc9a8ac73fa2ca8b146d29d153964b437168e301c09d8a688fae0cd81d32dc6508a4918a94614213c85df760793f44e245173bb6
   languageName: node
   linkType: hard
 
@@ -33287,13 +33272,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash.isequal@npm:^4.5.0":
-  version: 4.5.0
-  resolution: "lodash.isequal@npm:4.5.0"
-  checksum: 10/82fc58a83a1555f8df34ca9a2cd300995ff94018ac12cc47c349655f0ae1d4d92ba346db4c19bbfc90510764e0c00ddcc985a358bdcd4b3b965abf8f2a48a214
-  languageName: node
-  linkType: hard
-
 "lodash.isfunction@npm:^3.0.9":
   version: 3.0.9
   resolution: "lodash.isfunction@npm:3.0.9"
@@ -38805,22 +38783,6 @@ __metadata:
   version: 1.1.0
   resolution: "reachdown@npm:1.1.0"
   checksum: 10/9b267ced318fca2fe15d6023dc7798137878b7718df362b929692391ba56eb792744463b4b8d9863a170989df1d5170a4477d0631443e1d8bbf6ef2058a54b07
-  languageName: node
-  linkType: hard
-
-"react-ace@npm:^13.0.0":
-  version: 13.0.0
-  resolution: "react-ace@npm:13.0.0"
-  dependencies:
-    ace-builds: "npm:^1.36.3"
-    diff-match-patch: "npm:^1.0.5"
-    lodash.get: "npm:^4.4.2"
-    lodash.isequal: "npm:^4.5.0"
-    prop-types: "npm:^15.8.1"
-  peerDependencies:
-    react: ^0.13.0 || ^0.14.0 || ^15.0.1 || ^16.0.0 || ^17.0.0 || ^18.0.0
-    react-dom: ^0.13.0 || ^0.14.0 || ^15.0.1 || ^16.0.0 || ^17.0.0 || ^18.0.0
-  checksum: 10/93bf67725641d6533d25e930c309e86ea13f91299c6f3fa7ae90c35d647a8309beca2f031c31bf7fe2f3bc9d88831430befa3340eb6c1ed8d651529613363240
   languageName: node
   linkType: hard
 

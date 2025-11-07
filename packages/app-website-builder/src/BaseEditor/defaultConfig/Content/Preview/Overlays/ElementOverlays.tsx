@@ -39,9 +39,10 @@ export const ElementOverlays = observer(() => {
     const editor = useDocumentEditor();
     const { boxes } = usePreviewData();
     const isDragging = useIsDragging();
-    const { selectedElement } = useSelectFromEditor(state => {
+    const { selectedElement, highlightedElement } = useSelectFromEditor(state => {
         return {
-            selectedElement: state.selectedElement
+            selectedElement: state.selectedElement,
+            highlightedElement: state.highlightedElement
         };
     });
 
@@ -121,30 +122,30 @@ export const ElementOverlays = observer(() => {
         pointerEvents: isDragging ? "auto" : "none"
     };
 
+    const slots = boxes.preview.filter(filterSlots);
+
     return (
         <OverlayContainer ref={mergeRefs(dropRef)} style={viewportContainer}>
-            {/* This overlay triggers scroll in case we're hovering above something other than an editable element. */}
-            <div data-role={"element-overlay"} style={viewportContainer}></div>
             {boxes.preview.filter(filterElements).map(box => (
                 <Fragment key={box.id}>
                     <ElementOverlay
                         elementId={box.id}
                         isSelected={selectedElement === box.id}
+                        isHighlighted={highlightedElement === box.id}
                         previewBox={box}
                         editorBox={boxes.editor.get(box.id)!}
-                    >
-                        <>
-                            <ElementDropLines
-                                isFirst={box.parentIndex === 0}
-                                editorBox={boxes.editor.get(box.id)!}
-                                previewBox={box}
-                            />
-                        </>
-                    </ElementOverlay>
+                    />
+                    <ElementDropLines
+                        isFirst={box.parentIndex === 0}
+                        previewBox={box}
+                        editorBox={boxes.editor.get(box.id)!}
+                    />
+                    {slots
+                        .filter(slot => slot.parentId === box.id)
+                        .map(slot => (
+                            <DropBox key={slot.id} box={slot} onDrop={onDrop} />
+                        ))}
                 </Fragment>
-            ))}
-            {boxes.preview.filter(filterSlots).map(box => (
-                <DropBox key={box.id} box={box} onDrop={onDrop} />
             ))}
         </OverlayContainer>
     );

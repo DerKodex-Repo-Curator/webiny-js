@@ -2,7 +2,7 @@ import React from "react";
 import { css } from "emotion";
 import { Bind } from "@webiny/form";
 import { WebsiteSettingsConfig } from "~/modules/WebsiteSettings/config/WebsiteSettingsConfig";
-import { CodeEditor } from "@webiny/ui/CodeEditor";
+import { CodeEditor } from "@webiny/admin-ui";
 import { Typography } from "@webiny/ui/Typography";
 
 const inputStyle = css({
@@ -31,7 +31,7 @@ const CodeEditorInput = ({ name, label, description }: CodeEditorInputProps) => 
         <div className={inputStyle}>
             <Typography use={"subtitle1"}>{label}</Typography>
             <Bind name={name}>
-                <CodeEditor mode="html" theme="chrome" description={description} />
+                <CodeEditor language="html" theme="chrome" description={description} />
             </Bind>
         </div>
     );

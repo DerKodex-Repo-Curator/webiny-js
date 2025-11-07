@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { CodeEditor } from "./CodeEditor";
+import { CodeEditor } from "./CodeEditor.js";
 
 const meta: Meta<typeof CodeEditor> = {
     title: "Components/Form/CodeEditor",
@@ -92,7 +92,7 @@ export const Documentation: Story = {
             setValue(args.value || "");
         }, [args.value]);
 
-        const handleChange = (newValue: string) => {
+        const handleChange = (newValue: string | undefined) => {
             setValue(newValue);
 
             // Simple required validation
@@ -128,7 +128,6 @@ export const Documentation: Story = {
         disabled: false,
         description: "Enter your configuration in JSON format",
         note: "Note: Make sure your JSON is valid",
-        mode: "json",
         theme: "github",
         value: '{\n  "name": "example",\n  "version": "1.0.0"\n}',
         validation: undefined
@@ -154,11 +153,6 @@ export const Documentation: Story = {
             description: "Additional note text below the field",
             control: "text"
         },
-        mode: {
-            description: "The language mode for syntax highlighting",
-            control: "select",
-            options: ["html", "json"]
-        },
         theme: {
             description: "The theme for the code editor",
             control: "select",
@@ -170,12 +164,10 @@ export const Documentation: Story = {
         },
         validation: {
             description:
-                "Object containing validation state and message. Please refer to the example code for details on usage.",
-            control: "none"
+                "Object containing validation state and message. Please refer to the example code for details on usage."
         },
         onChange: {
-            description: "Function called when the code changes",
-            control: "none"
+            description: "Function called when the code changes"
         }
     }
 };
