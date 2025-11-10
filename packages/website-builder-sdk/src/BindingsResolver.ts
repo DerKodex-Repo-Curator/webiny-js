@@ -166,7 +166,7 @@ export class BindingsResolver {
     }
 
     private resolveBinding(binding: ValueBinding | undefined, context: Record<string, any>): any {
-        if (!binding) {
+        if (typeof binding === "undefined") {
             return undefined;
         }
 
@@ -174,7 +174,7 @@ export class BindingsResolver {
             return this.evaluateExpression(binding.expression, context);
         }
 
-        if (binding.static) {
+        if (typeof binding.static !== "undefined") {
             return binding.static;
         }
 
