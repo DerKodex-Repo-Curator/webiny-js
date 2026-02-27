@@ -3,6 +3,7 @@ export default {
     trailingComma: "none",
     tabWidth: 2,
     arrowParens: "avoid",
+    endOfLine: "lf",
     overrides: [
         {
             files: ["*.js", "*.ts", "*.tsx"],
