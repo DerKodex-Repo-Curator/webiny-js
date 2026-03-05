@@ -2,7 +2,7 @@ import type { DragEventHandler } from "react";
 import React from "react";
 import { plugins } from "@webiny/plugins";
 import Draggable from "../Draggable.js";
-import type { CmsModelFieldTypePlugin, CmsLayoutFieldTypePlugin } from "~/types.js";
+import type { CmsLayoutFieldTypePlugin, CmsModelFieldTypePlugin } from "~/types.js";
 import { Heading, Icon, Text } from "@webiny/admin-ui";
 
 interface FieldProps {
@@ -19,7 +19,9 @@ const Field = (props: FieldProps) => {
         <Draggable beginDrag={{ type: "newField", fieldType: type }}>
             {({ drag }) => (
                 <div
-                    ref={drag}
+                    ref={element => {
+                        drag(element);
+                    }}
                     data-testid={`cms-editor-fields-field-${type}`}
                     onDragStart={onFieldDragStart}
                     className={
@@ -62,7 +64,9 @@ const LayoutFieldItem = (props: LayoutFieldItemProps) => {
         <Draggable beginDrag={{ type: "newLayoutField", layoutFieldType: type }}>
             {({ drag }) => (
                 <div
-                    ref={drag}
+                    ref={element => {
+                        drag(element);
+                    }}
                     data-testid={`cms-editor-fields-layout-field-${type}`}
                     onDragStart={onFieldDragStart}
                     className={
